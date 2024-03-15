@@ -2,8 +2,9 @@
 
 ## storySlug - Description
 
-**Who** needs a way to **What** 
-where **Who** is an [End User Persona](https://github.com/agile-learning-institute/mentorHub/blob/main/specifications/PERSONA.md#end-user-personas)
+### **Who** needs a way to **What** 
+
+Where **Who** is an [End User Persona](https://github.com/agile-learning-institute/mentorHub/blob/main/specifications/PERSONA.md#end-user-personas)
 and **What** is the meaningful outcome of the story.
 - Step by Step
 - Instructions starting with "Opens PageX"
