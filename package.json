@@ -5,6 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
+		"serve": "vite --port 8087",
 		"build": "vite build",
 		"lint": "eslint . --ext .js,.jsx,.ts,.tsx"
 	},
