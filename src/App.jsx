@@ -4,12 +4,15 @@ import {
   Navigate,
 } from "react-router-dom";
 import AppLayout from "./ui/AppLayout";
-import Topics from "./pages/Topics";
 import AddTopic from "./pages/AddTopic";
 import UpdateTopic from "./pages/UpdateTopic";
 import ErrorPage from "./pages/ErrorPage";
 import UpdateResource from "./pages/UpdateResource";
-import { createTheme, ThemeProvider } from "@mui/material";
+import { createTheme, ThemeProvider,} from "@mui/material";
+import Path from "./pages/Path";
+import Category from "./pages/Category";
+import "./style.css";
+import UpdateSkill from "./pages/UpdateSkill";
 
 const theme = createTheme({
   typography: {
@@ -70,11 +73,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Navigate to="/topics" replace={true} />,
-      },
-      {
-        path: "/topics",
-        element: <Topics />,
+        element: <Navigate to="/path" replace={true} />,
       },
       {
         path: "/topic",
@@ -86,9 +85,22 @@ const router = createBrowserRouter([
         loader: UpdateTopic.loader,
       },
       {
-        path: "resource/:resourceId",
+        path: "/topic/skills/:topicId/:skillId",
+        element: <UpdateSkill />,
+        // loader: UpdateTopic.loader,
+      },
+      {
+        path: "resource/:topicId/:resourceName",
         element: <UpdateResource />,
         loader: UpdateResource.loader,
+      },
+      {
+        path: "/path",
+        element: <Path />,
+      },
+      {
+        path: "/category",
+        element: <Category />,
       },
     ],
   },

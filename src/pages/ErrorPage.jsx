@@ -10,7 +10,7 @@ function Error() {
       <p>
         {error.status} {error.statusText}
       </p>
-      <p>{error.error.message}</p>
+      <p>{error.error?.message}</p>
     </Container>
   );
 }
