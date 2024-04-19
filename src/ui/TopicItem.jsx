@@ -1,14 +1,10 @@
 import { DragHandle } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import Typography from "@mui/material/Typography";
+import { useNavigate } from "react-router-dom";
 
-function TopicItem({
-  topic,
-  topics,
-  handleDragOver,
-  handleDragStart,
-  handleDrop,
-}) {
+function TopicItem({ topic, isDraggable = true }) {
+  const navigate = useNavigate();
   return (
     <Typography
       variant="body1"
@@ -20,25 +16,24 @@ function TopicItem({
         border: "1px solid #ddd",
         borderRadius: "4px",
         my: "0.5rem",
-        width: "75%",
         display: "flex",
+        width: "100%",
         justifyContent: "space-between",
         maxWidth: {
           md: "70%",
           lg: "60%",
           xl: "60%",
         },
-        cursor: 'grab'
+        cursor: "grab",
       }}
       draggable
-      onDragStart={(e) => handleDragStart(e, topics.indexOf(topic))}
-      onDragOver={(e) => handleDragOver(e, topics.indexOf(topic))}
-      onDrop={(e) => handleDrop(e, topics.indexOf(topic))}
     >
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <DragHandle sx={{ ml: "8px", mr: "18px" }} /> {topic.Name}
+      <div key={topic.Id} style={{ display: "flex", alignItems: "center" }}>
+        {isDraggable && <DragHandle sx={{ ml: "8px", mr: "18px" }} />} {topic.Name}
       </div>
-      <Button size="small">EDIT</Button>
+      <Button onClick={() => navigate(`/topic/${topic.Id}`)} size="small">
+        EDIT
+      </Button>
     </Typography>
   );
 }
