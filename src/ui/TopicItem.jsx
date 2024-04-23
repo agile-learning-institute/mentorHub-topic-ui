@@ -19,6 +19,7 @@ function TopicItem({ topic, isDraggable = true }) {
         display: "flex",
         width: "100%",
         justifyContent: "space-between",
+        alignItems: "center",
         maxWidth: {
           md: "70%",
           lg: "60%",
@@ -31,7 +32,7 @@ function TopicItem({ topic, isDraggable = true }) {
       <div key={topic.Id} style={{ display: "flex", alignItems: "center" }}>
         {isDraggable && <DragHandle sx={{ ml: "8px", mr: "18px" }} />} {topic.Name}
       </div>
-      <Button onClick={() => navigate(`/topic/${topic.Id}`)} size="small">
+      <Button onClick={() => navigate(`/topic/${topic.Id}`)} size="small" sx={{height: "30px", marginX: "2px"}}>
         EDIT
       </Button>
     </Typography>

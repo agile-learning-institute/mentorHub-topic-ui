@@ -6,13 +6,14 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  Typography,
+  Typography, Accordion, AccordionSummary, AccordionDetails,
 } from "@mui/material";
 import { mockCategories } from "../mockdata/mockdata.js";
 import TopicItem from "../ui/TopicItem.jsx";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@emotion/react";
 import { useMockTopics } from "../context/MockTopicsContext.jsx";
+import { ExpandMore } from '@mui/icons-material'
 
 function Category() {
   const [category, setCategory] = useState("");
@@ -50,59 +51,28 @@ function Category() {
         Add Topic
       </Button>
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "1.5rem",
-        }}
-      >
-        <FormControl fullWidth>
-          {/* Selection for Category/Path */}
-          <InputLabel id="demo-simple-select-label"> Category</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={category}
-            label="Category"
-            onChange={handleCategoryChange}
+     
+
+      {/* Accordions */}
+
+            {mockCategories.map(cat => (
+              <Accordion key={cat}>
+              <AccordionSummary
+          expandIcon={<ExpandMore />}
+          aria-label="Expand"
+          aria-controls="-content"
+          id="-header"
           >
-            {mockCategories.map((cat, i) => (
-              <MenuItem key={i} value={cat}>
-                {cat}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </div>
-      {/* Conditionally render topics*/}
-      {category && (
-        <div
-          key={currTopics.length}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Typography
-            variant="h6"
-            color="initial"
-            sx={{ marginBottom: "0.5rem", marginTop: "1rem" }}
-          >
-            Topics:
-          </Typography>
-          {currTopics?.length ? (
-            currTopics.map((topic) => (
-              <TopicItem isDraggable={false} key={topic.Id} topic={topic} />
-            ))
-          ) : (
-            <Typography>No Topics to Display</Typography>
-          )}
-        </div>
-      )}
+          <Typography>{cat}</Typography>
+        </AccordionSummary>
+        <AccordionDetails sx={{ backgroundColor: "#fff"}}>
+          {mockTopics.filter(topic => topic.Category === cat).map(topic => (
+            <TopicItem isDraggable={false} key={topic.Id} topic={topic} />
+          ))}
+        </AccordionDetails>
+          </Accordion>
+              ))}
+
     </Box>
   );
 }
