@@ -204,7 +204,8 @@ function UpdateTopic() {
                 <Button
                   onClick={() => navigate(`/topic/skills/${topicId}/${i}`)}
                   size="small"
-                  sx={{ ml: 2 }}
+                  sx={{ ml: 2, flexShrink: 0 }}
+
                 >
                   Details
                 </Button>
@@ -268,7 +269,7 @@ function UpdateTopic() {
                   navigate(`/topic/resource/${topicId}/${res.Name}`)
                 }
                 size="small"
-                sx={{ ml: 2 }}
+                sx={{ ml: 2, flexShrink: 0 }}
               >
                 Details
               </Button>
