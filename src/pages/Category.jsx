@@ -12,13 +12,20 @@ import { useNavigate } from "react-router-dom";
 import { useTheme } from "@emotion/react";
 import { useMockTopics } from "../context/MockTopicsContext.jsx";
 import { ExpandMore } from "@mui/icons-material";
+import { useState } from "react";
 
 function Category() {
   const { state: mockTopics } = useMockTopics();
+  const [expanded, setExpanded] = useState("");
 
   const navigate = useNavigate();
   const theme = useTheme();
 
+  function handleChange(panel) {
+    return (event, isExpanded) => {
+      setExpanded(isExpanded ? panel : false);
+    };
+  }
   return (
     <Box>
       <Typography
@@ -45,7 +52,11 @@ function Category() {
       {/* Accordions */}
 
       {mockCategories.map((cat) => (
-        <Accordion key={cat}>
+        <Accordion
+          key={cat}
+          expanded={cat === expanded}
+          onChange={handleChange(cat)}
+        >
           <AccordionSummary
             expandIcon={<ExpandMore />}
             aria-label="Expand"
