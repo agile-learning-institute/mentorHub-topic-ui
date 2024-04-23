@@ -90,7 +90,7 @@ const router = createBrowserRouter([
         // loader: UpdateTopic.loader,
       },
       {
-        path: "resource/:topicId/:resourceName",
+        path: "topic/resource/:topicId/:resourceName",
         element: <UpdateResource />,
         loader: UpdateResource.loader,
       },

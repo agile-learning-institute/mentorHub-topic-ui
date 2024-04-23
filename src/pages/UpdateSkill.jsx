@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   FormControl,
   InputLabel,
   ListItemText,
@@ -9,9 +10,11 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useMockTopics } from "../context/MockTopicsContext";
 import { mockMastery, mockSpecialty } from "../mockdata/mockdata";
+import { useTheme } from "@emotion/react";
+
 function UpdateSkill() {
   const { topicId, skillId } = useParams();
   const { state: mockTopics, updateSkill } = useMockTopics();
@@ -21,10 +24,12 @@ function UpdateSkill() {
   const [status, setStatus] = useState(skill?.status || "Active");
   const [description, setDescription] = useState(skill?.description || "");
   const [mastery, setMastery] = useState(skill?.mastery || "");
-  const [speciality, setSpeciality] = useState(skill?.speciality || '');
+  const [speciality, setSpeciality] = useState(skill?.speciality || "");
+  const theme = useTheme();
+  const navigate = useNavigate();
 
   function handleBlur(e) {
-    const fieldName = e.currentTarget?.getAttribute("id") || 'status';
+    const fieldName = e.currentTarget?.getAttribute("id") || "status";
     const fieldValue = e.target.value;
 
     const currentValue = topic.Skills[skillId][fieldName];
@@ -36,18 +41,18 @@ function UpdateSkill() {
 
     updateSkill(topicId, skillId, fieldName, fieldValue);
   }
-  function handleDescriptionChange(e){
-    setDescription(e.target.value)
-    handleBlur(e)
+  function handleDescriptionChange(e) {
+    setDescription(e.target.value);
+    handleBlur(e);
   }
-  function handleNameChange(e){
-    setSkillName(e.target.value)
-    handleBlur(e)
+  function handleNameChange(e) {
+    setSkillName(e.target.value);
+    handleBlur(e);
   }
 
-  function handleStatusChange(e){
-    setStatus(e.target.value)
-    handleBlur(e)
+  function handleStatusChange(e) {
+    setStatus(e.target.value);
+    handleBlur(e);
   }
   return (
     <Box mb={4}>
@@ -83,7 +88,7 @@ function UpdateSkill() {
         <TextField
           id="description"
           value={description}
-          onChange={handleDescriptionChange }
+          onChange={handleDescriptionChange}
           onBlur={null}
           multiline
           rows={4}
@@ -131,7 +136,17 @@ function UpdateSkill() {
           ))}
         </Select>
       </FormControl>
+
+      <Box mt={2} display={"flex"} justifyContent="center">
+        <Button
+          onClick={() => navigate(-1)}
+          sx={{ backgroundColor: theme.palette.grey[300] }}
+        >
+          Return to Topic
+        </Button>
+      </Box>
     </Box>
   );
 }
+
 export default UpdateSkill;
