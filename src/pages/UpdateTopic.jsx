@@ -53,9 +53,7 @@ function UpdateTopic() {
       return;
     }
     addResource(topicId, { Name: newResourceValue });
-    setResources([...resources, { Name: newResourceValue }]);
-    setShowAddResource(false);
-    setNewResourceValue("");
+    navigate(`/topic/resource/${topicId}/${newResourceValue}`);
   }
 
   function handleBlur(e) {
@@ -103,9 +101,7 @@ function UpdateTopic() {
     };
 
     addSkillToTopic(topicId, skillObj);
-    setSkills([...skills, skillObj]);
-    setShowAddSkill(false);
-    setNewSkillValue("");
+    navigate(`/topic/skills/${topicId}/${skills.length}`);
   }
 
   if (!topic) return <p>Sorry , topic not found.</p>;
@@ -210,7 +206,7 @@ function UpdateTopic() {
                   size="small"
                   sx={{ ml: 2 }}
                 >
-                  Edit
+                  Details
                 </Button>
               </Box>
             ))}
@@ -268,11 +264,13 @@ function UpdateTopic() {
             >
               <Typography variant="body2">{res?.Name}</Typography>
               <Button
-                onClick={() => navigate(`/resource/${topicId}/${res.Name}`)}
+                onClick={() =>
+                  navigate(`/topic/resource/${topicId}/${res.Name}`)
+                }
                 size="small"
                 sx={{ ml: 2 }}
               >
-                Edit
+                Details
               </Button>
             </Box>
           ))}
@@ -286,7 +284,7 @@ function UpdateTopic() {
 
       {/* Conditionally render the "Add Resource" form */}
       {showAddResource && (
-        <form onSubmit={handleAddResource}>
+        <form>
           <Box border={1} borderColor="grey.400" borderRadius={1} p={2}>
             <TextField
               value={newResourceValue}

@@ -12,7 +12,9 @@ import {
 } from "@mui/material";
 import { useRef, useState } from "react";
 import { useLoaderData } from "react-router";
+import { useNavigate } from 'react-router-dom'
 import { useMockTopics } from "../context/MockTopicsContext";
+import { useTheme } from "@emotion/react";
 
 const mockTags = [
   "$",
@@ -52,6 +54,8 @@ function UpdateResource() {
   );
   const [skills, setSkills] = useState(resourceSkillNames || []);
   const skillInput = useRef(null);
+  const navigate = useNavigate()
+  const theme = useTheme();
 
   const handleSkillsChange = (event) => {
     setSkills(event.target.value);
@@ -158,7 +162,7 @@ function UpdateResource() {
             renderValue={(selected) => selected.join(", ")}
             sx={{ marginBottom: 1.5 }}
           >
-            {topicSkills.map((s, i) => (
+            {topicSkills?.map((s, i) => (
               <MenuItem key={i} value={s} onClick={handleSkillsChange}>
                 <Checkbox
                   checked={
@@ -214,6 +218,14 @@ function UpdateResource() {
           ))}
         </Select>
       </FormControl>
+      <Box mt={2} display={"flex"} justifyContent="center">
+        <Button
+          onClick={() => navigate(-1)}
+          sx={{ backgroundColor: theme.palette.grey[300] }}
+        >
+          Return to Topic
+        </Button>
+      </Box>
     </Box>
   );
 }
