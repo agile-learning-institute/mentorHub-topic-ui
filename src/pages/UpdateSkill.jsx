@@ -41,18 +41,18 @@ function UpdateSkill() {
 
     updateSkill(topicId, skillId, fieldName, fieldValue);
   }
-  function handleDescriptionChange(e) {
-    setDescription(e.target.value);
-    handleBlur(e);
+  function handleDescriptionChange(e){
+    setDescription(e.target.value)
+    handleBlur(e)
   }
-  function handleNameChange(e) {
-    setSkillName(e.target.value);
-    handleBlur(e);
+  function handleNameChange(e){
+    setSkillName(e.target.value)
+    handleBlur(e)
   }
 
-  function handleStatusChange(e) {
-    setStatus(e.target.value);
-    handleBlur(e);
+  function handleStatusChange(e){
+    setStatus(e.target.value)
+    handleBlur(e)
   }
   return (
     <Box mb={4}>
@@ -88,7 +88,7 @@ function UpdateSkill() {
         <TextField
           id="description"
           value={description}
-          onChange={handleDescriptionChange}
+          onChange={handleDescriptionChange }
           onBlur={null}
           multiline
           rows={4}
