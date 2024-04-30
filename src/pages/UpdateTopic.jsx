@@ -132,19 +132,6 @@ function UpdateTopic() {
           }}
           required
         />
-        <FormControl variant="outlined">
-          <InputLabel>Status</InputLabel>
-          <Select
-            id="Status"
-            label="Status"
-            value={status}
-            onBlur={handleBlur}
-            onChange={handleStatusChange}
-          >
-            <MenuItem value="Active">Active</MenuItem>
-            <MenuItem value="Archived">Archived</MenuItem>
-          </Select>
-        </FormControl>
 
         <Box>
           <TextField
@@ -205,7 +192,6 @@ function UpdateTopic() {
                   onClick={() => navigate(`/topic/skills/${topicId}/${i}`)}
                   size="small"
                   sx={{ ml: 2, flexShrink: 0 }}
-
                 >
                   Details
                 </Button>
@@ -306,8 +292,24 @@ function UpdateTopic() {
           </Box>
         </form>
       )}
-
-      {/* button with link to /path */}
+      <FormControl variant="outlined" fullWidth sx={{ mt: 4 }}>
+        <InputLabel>Topic Status</InputLabel>
+        <Select
+          id="Status"
+          label="Topic Status"
+          value={status}
+          onBlur={handleBlur}
+          onChange={handleStatusChange}
+          sx={{
+            "& fieldset": {
+              borderColor: status === "Active" ? "lightgreen" : "red",
+            },
+          }}
+        >
+          <MenuItem value="Active">Active</MenuItem>
+          <MenuItem value="Archived">Archived</MenuItem>
+        </Select>
+      </FormControl>
     </Box>
   );
 }
