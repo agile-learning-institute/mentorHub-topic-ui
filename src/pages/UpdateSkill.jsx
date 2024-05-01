@@ -41,18 +41,18 @@ function UpdateSkill() {
 
     updateSkill(topicId, skillId, fieldName, fieldValue);
   }
-  function handleDescriptionChange(e){
-    setDescription(e.target.value)
-    handleBlur(e)
+  function handleDescriptionChange(e) {
+    setDescription(e.target.value);
+    handleBlur(e);
   }
-  function handleNameChange(e){
-    setSkillName(e.target.value)
-    handleBlur(e)
+  function handleNameChange(e) {
+    setSkillName(e.target.value);
+    handleBlur(e);
   }
 
-  function handleStatusChange(e){
-    setStatus(e.target.value)
-    handleBlur(e)
+  function handleStatusChange(e) {
+    setStatus(e.target.value);
+    handleBlur(e);
   }
   return (
     <Box mb={4}>
@@ -70,25 +70,12 @@ function UpdateSkill() {
         />
       </Box>
 
-      <FormControl variant="outlined" fullWidth>
-        <InputLabel>Status</InputLabel>
-        <Select
-          id="status"
-          label="Status"
-          value={status}
-          onChange={handleStatusChange}
-        >
-          <MenuItem value="Active">Active</MenuItem>
-          <MenuItem value="Archived">Archived</MenuItem>
-        </Select>
-      </FormControl>
-
       <Box mt={1}>
         <Typography variant="body2">Description</Typography>
         <TextField
           id="description"
           value={description}
-          onChange={handleDescriptionChange }
+          onChange={handleDescriptionChange}
           onBlur={null}
           multiline
           rows={4}
@@ -137,6 +124,25 @@ function UpdateSkill() {
         </Select>
       </FormControl>
 
+      <FormControl variant="outlined" fullWidth sx={{ mt: 4 }}>
+        <InputLabel>Skill Status</InputLabel>
+        <Select
+          id="Status"
+          label="Skill Status"
+          value={status}
+          onBlur={handleBlur}
+          onChange={handleStatusChange}
+          sx={{
+            "& fieldset": {
+              borderColor: status === "Active" ? "lightgreen" : "red",
+            },
+          }}
+        >
+          <MenuItem value="Active">Active</MenuItem>
+          <MenuItem value="Archived">Archived</MenuItem>
+        </Select>
+      </FormControl>
+
       <Box mt={2} display={"flex"} justifyContent="center">
         <Button
           onClick={() => navigate(-1)}
@@ -145,6 +151,7 @@ function UpdateSkill() {
           Return to Topic
         </Button>
       </Box>
+
     </Box>
   );
 }
