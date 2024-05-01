@@ -145,34 +145,7 @@ function UpdateSkill() {
         </Box>
       </Box>
 
-      <Box
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-        mb={2.5}
-      >
-        <FormControl
-          variant="outlined"
-          sx={{ marginRight: "0.5rem" }}
-          fullWidth
-        >
-          <InputLabel>Status</InputLabel>
-          <Select
-            id="status"
-            label="Status"
-            value={status}
-            onChange={handleStatusChange}
-          >
-            <MenuItem value="Active">Active</MenuItem>
-            <MenuItem value="Archived">Archived</MenuItem>
-          </Select>
-        </FormControl>
-        <AnimationContainer>
-          {showAnimation.status && <SaveAnimation />}
-        </AnimationContainer>
-      </Box>
+
 
       <Box style={{ display: "flex", alignItems: "center" }} mb={2.5}>
         <FormControl
@@ -249,7 +222,46 @@ function UpdateSkill() {
         </AnimationContainer>
       </Box>
 
-      <Box display={"flex"} justifyContent="center">
+
+      <Box
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        mb={2.5}
+        mt={4}
+      >
+        <FormControl
+          variant="outlined"
+          sx={{ marginRight: "0.5rem" }}
+          fullWidth
+        >
+          <InputLabel>Status</InputLabel>
+          <Select
+            id="status"
+            label="Status"
+            value={status}
+            onChange={handleStatusChange}
+            sx={{
+              "& fieldset": {
+                borderColor: status === "Active" ? "lightgreen" : "red",
+              },
+            }}
+          >
+            <MenuItem value="Active">Active</MenuItem>
+            <MenuItem value="Archived">Archived</MenuItem>
+          </Select>
+        </FormControl>
+        <AnimationContainer>
+          {showAnimation.status && <SaveAnimation />}
+        </AnimationContainer>
+      </Box>
+
+
+
+
+      <Box mt={2} display={"flex"} justifyContent="center">
         <Button
           onClick={() => navigate(-1)}
           sx={{ backgroundColor: theme.palette.grey[300] }}
@@ -257,6 +269,7 @@ function UpdateSkill() {
           Return to Topic
         </Button>
       </Box>
+
     </Box>
   );
 }

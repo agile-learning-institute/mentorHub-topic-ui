@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { useRef, useState } from "react";
 import { useLoaderData } from "react-router";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 import { useMockTopics } from "../context/MockTopicsContext";
 import { useTheme } from "@emotion/react";
 
@@ -54,7 +54,7 @@ function UpdateResource() {
   );
   const [skills, setSkills] = useState(resourceSkillNames || []);
   const skillInput = useRef(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const theme = useTheme();
 
   const handleSkillsChange = (event) => {
@@ -96,20 +96,6 @@ function UpdateResource() {
             shrink: true,
           }}
         />
-
-        <FormControl variant="outlined">
-          <InputLabel>Status</InputLabel>
-          <Select
-            id="Status"
-            label="Status"
-            value={status}
-            onBlur={null}
-            onChange={(e) => setStatus(e.target.value)}
-          >
-            <MenuItem value="Active">Active</MenuItem>
-            <MenuItem value="Archived">Archived</MenuItem>
-          </Select>
-        </FormControl>
 
         <Box>
           <Typography variant="body2">Description</Typography>
@@ -218,6 +204,26 @@ function UpdateResource() {
           ))}
         </Select>
       </FormControl>
+
+      <FormControl variant="outlined" fullWidth sx={{ mt: 4 }}>
+        <InputLabel>Resource Status</InputLabel>
+        <Select
+          id="Status"
+          label="Resource Status"
+          value={status}
+          onBlur={null}
+          onChange={(e) => setStatus(e.target.value)}
+          sx={{
+            "& fieldset": {
+              borderColor: status === "Active" ? "lightgreen" : "red",
+            },
+          }}
+        >
+          <MenuItem value="Active">Active</MenuItem>
+          <MenuItem value="Archived">Archived</MenuItem>
+        </Select>
+      </FormControl>
+
       <Box mt={2} display={"flex"} justifyContent="center">
         <Button
           onClick={() => navigate(-1)}
@@ -226,6 +232,7 @@ function UpdateResource() {
           Return to Topic
         </Button>
       </Box>
+
     </Box>
   );
 }
