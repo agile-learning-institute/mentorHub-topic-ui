@@ -9,14 +9,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMockTopics } from "../context/MockTopicsContext";
 import { mockMastery, mockSpecialty } from "../mockdata/mockdata";
 import { useTheme } from "@emotion/react";
-import SaveAnimation from "../ui/SaveAnimation.jsx";
+// import SaveAnimation from "../ui/SaveAnimation.jsx";
 import { debounce } from "../helpers/utils.js";
-import AnimationContainer from "../ui/AnimationContainer.jsx";
+// import AnimationContainer from "../ui/AnimationContainer.jsx";
+import {toast} from 'react-hot-toast'
 
 function UpdateSkill() {
   const { topicId, skillId } = useParams();
@@ -31,18 +32,23 @@ function UpdateSkill() {
   const theme = useTheme();
   const navigate = useNavigate();
   const animationTimeoutRef = useRef(null);
-  const [showAnimation, setShowAnimation] = useState({
-    name: false,
-    status: false,
-    description: false,
-    mastery: false,
-    speciality: false,
-  });
+  // const [showAnimation, setShowAnimation] = useState({
+  //   name: false,
+  //   status: false,
+  //   description: false,
+  //   mastery: false,
+  //   speciality: false,
+  // });
+
 
   const delayedSaveAndAnimate = useRef(
     debounce((fieldName, fieldValue) => {
       // Update the state of the skill
-      updateSkill(topicId, skillId, fieldName, fieldValue);
+      const updateSkillPromise = toast.promise(updateSkill(topicId, skillId, fieldName, fieldValue), {
+        loading: 'Updating...',
+        success: `${fieldName ? fieldName[0].toUpperCase() + fieldName.slice(1) : "Field"} updated successfully`,
+        error: 'Failed to update field',
+      })
 
       // Clear existing timeout if any
       if (animationTimeoutRef.current) {
@@ -50,10 +56,10 @@ function UpdateSkill() {
       }
 
       // Turn on the animation after save fn completes
-      setShowAnimation((prevState) => ({
-        ...prevState,
-        [fieldName]: true,
-      }));
+      // setShowAnimation((prevState) => ({
+      //   ...prevState,
+      //   [fieldName]: true,
+      // }));
     }, 1000),
   ).current;
 
@@ -61,10 +67,10 @@ function UpdateSkill() {
     const fieldName = e.target["id"] || "status";
     const fieldValue = e.target.value;
 
-    setShowAnimation((state) => ({
-      ...state,
-      description: false,
-    }));
+    // setShowAnimation((state) => ({
+    //   ...state,
+    //   description: false,
+    // }));
     setDescription(e.target.value);
     delayedSaveAndAnimate(fieldName, fieldValue);
   }
@@ -73,10 +79,10 @@ function UpdateSkill() {
     const fieldName = e.target["id"] || "status";
     const fieldValue = e.target.value;
 
-    setShowAnimation((state) => ({
-      ...state,
-      name: false,
-    }));
+    // setShowAnimation((state) => ({
+    //   ...state,
+    //   name: false,
+    // }));
     const value = e.target.value;
     setSkillName(value);
     delayedSaveAndAnimate(fieldName, fieldValue);
@@ -86,10 +92,10 @@ function UpdateSkill() {
     const fieldName = e.target["id"] || "status";
     const fieldValue = e.target.value;
 
-    setShowAnimation((state) => ({
-      ...state,
-      status: false,
-    }));
+    // setShowAnimation((state) => ({
+    //   ...state,
+    //   status: false,
+    // }));
     setStatus(e.target.value);
     delayedSaveAndAnimate(fieldName, fieldValue);
   }
@@ -97,10 +103,10 @@ function UpdateSkill() {
   function handleMasteryChange(e) {
     const fieldName = "mastery";
     const fieldValue = e.target.value;
-    setShowAnimation((state) => ({
-      ...state,
-      mastery: false,
-    }));
+    // setShowAnimation((state) => ({
+    //   ...state,
+    //   mastery: false,
+    // }));
     setMastery(e.target.value);
     delayedSaveAndAnimate(fieldName, fieldValue);
   }
@@ -108,10 +114,10 @@ function UpdateSkill() {
   function handleSpecialityChange(e) {
     const fieldName = "speciality";
     const fieldValue = e.target.value;
-    setShowAnimation((state) => ({
-      ...state,
-      speciality: false,
-    }));
+    // setShowAnimation((state) => ({
+    //   ...state,
+    //   speciality: false,
+    // }));
     setSpeciality(e.target.value);
     delayedSaveAndAnimate(fieldName, fieldValue);
   }
@@ -139,9 +145,9 @@ function UpdateSkill() {
             sx={{ flexGrow: 1 }}
             required
           />
-          <AnimationContainer>
+          {/* <AnimationContainer>
             {showAnimation.name && <SaveAnimation />}
-          </AnimationContainer>
+          </AnimationContainer> */}
         </Box>
       </Box>
 
@@ -150,7 +156,6 @@ function UpdateSkill() {
       <Box style={{ display: "flex", alignItems: "center" }} mb={2.5}>
         <FormControl
           variant="outlined"
-          sx={{ marginRight: "0.5rem" }}
           fullWidth
         >
           <TextField
@@ -164,16 +169,15 @@ function UpdateSkill() {
             fullWidth
           />
         </FormControl>
-        <AnimationContainer>
+        {/* <AnimationContainer>
           {showAnimation.description && <SaveAnimation />}
-        </AnimationContainer>
+        </AnimationContainer> */}
       </Box>
 
       {/* Mastery */}
       <Box style={{ display: "flex", alignItems: "center" }} mb={2.5}>
         <FormControl
           variant="outlined"
-          sx={{ marginRight: "0.5rem" }}
           fullWidth
         >
           <InputLabel>Mastery</InputLabel>
@@ -190,9 +194,9 @@ function UpdateSkill() {
             ))}
           </Select>
         </FormControl>
-        <AnimationContainer>
+        {/* <AnimationContainer>
           {showAnimation.mastery && <SaveAnimation />}
-        </AnimationContainer>
+        </AnimationContainer> */}
       </Box>
 
       {/* Speciality */}
@@ -200,7 +204,6 @@ function UpdateSkill() {
       <Box style={{ display: "flex", alignItems: "center" }} mb={2.5}>
         <FormControl
           variant="outlined"
-          sx={{ marginRight: "0.5rem" }}
           fullWidth
         >
           <InputLabel>Speciality</InputLabel>
@@ -217,9 +220,9 @@ function UpdateSkill() {
             ))}
           </Select>
         </FormControl>
-        <AnimationContainer>
+        {/* <AnimationContainer>
           {showAnimation.speciality && <SaveAnimation />}
-        </AnimationContainer>
+        </AnimationContainer> */}
       </Box>
 
 
@@ -234,7 +237,6 @@ function UpdateSkill() {
       >
         <FormControl
           variant="outlined"
-          sx={{ marginRight: "0.5rem" }}
           fullWidth
         >
           <InputLabel>Status</InputLabel>
@@ -253,9 +255,9 @@ function UpdateSkill() {
             <MenuItem value="Archived">Archived</MenuItem>
           </Select>
         </FormControl>
-        <AnimationContainer>
+        {/* <AnimationContainer>
           {showAnimation.status && <SaveAnimation />}
-        </AnimationContainer>
+        </AnimationContainer> */}
       </Box>
 
 

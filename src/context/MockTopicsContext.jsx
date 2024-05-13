@@ -98,7 +98,7 @@ export const MockTopicsProvider = ({ children }) => {
     });
     return newTopic;
   };
-  const updateSkill = (topicId, skillIndex, fieldName, newValue) => {
+  const updateSkill = async (topicId, skillIndex, fieldName, newValue) => {
     dispatch({
       type: "UPDATE_SKILL",
       payload: { topicId, skillIndex, fieldName, newValue },
@@ -126,7 +126,6 @@ export const MockTopicsProvider = ({ children }) => {
     });
   };
 
-
   return (
     <MockTopicsContext.Provider
       value={{
@@ -136,7 +135,7 @@ export const MockTopicsProvider = ({ children }) => {
         addResource,
         addSkillToTopic,
         updateSkill,
-        updateResourceSkills
+        updateResourceSkills,
       }}
     >
       {children}
