@@ -3,12 +3,13 @@ import {
   RouterProvider,
   Navigate,
 } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import AppLayout from "./ui/AppLayout";
 import AddTopic from "./pages/AddTopic";
 import UpdateTopic from "./pages/UpdateTopic";
 import ErrorPage from "./pages/ErrorPage";
 import UpdateResource from "./pages/UpdateResource";
-import { createTheme, ThemeProvider,} from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material";
 import Path from "./pages/Path";
 import Category from "./pages/Category";
 import "./style.css";
@@ -110,6 +111,25 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <RouterProvider router={router}></RouterProvider>
+      <Toaster
+        position="top-right"
+        gutter={12}
+        containerStyle={{ margin: "8px" }}
+        toastOptions={{
+          success: {
+            duration: 3000,
+          },
+          error: {
+            duration: 5000,
+          },
+          style: {
+            fontFamily: "avenir lt pro, Helvetica, Arial, sans-serif",
+            fontSize: "16px",
+            maxWidth: "500px",
+            padding: "16px 24px",
+          },
+        }}
+      />
     </ThemeProvider>
   );
 }

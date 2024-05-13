@@ -9,11 +9,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMockTopics } from "../context/MockTopicsContext";
 import { mockMastery, mockSpecialty } from "../mockdata/mockdata";
 import { useTheme } from "@emotion/react";
+// import SaveAnimation from "../ui/SaveAnimation.jsx";
+import { debounce } from "../helpers/utils.js";
+// import AnimationContainer from "../ui/AnimationContainer.jsx";
+import {toast} from 'react-hot-toast'
 
 function UpdateSkill() {
   const { topicId, skillId } = useParams();
@@ -27,121 +31,237 @@ function UpdateSkill() {
   const [speciality, setSpeciality] = useState(skill?.speciality || "");
   const theme = useTheme();
   const navigate = useNavigate();
+  const animationTimeoutRef = useRef(null);
+  // const [showAnimation, setShowAnimation] = useState({
+  //   name: false,
+  //   status: false,
+  //   description: false,
+  //   mastery: false,
+  //   speciality: false,
+  // });
 
-  function handleBlur(e) {
-    const fieldName = e.currentTarget?.getAttribute("id") || "status";
+
+  const delayedSaveAndAnimate = useRef(
+    debounce((fieldName, fieldValue) => {
+      // Update the state of the skill
+      const updateSkillPromise = toast.promise(updateSkill(topicId, skillId, fieldName, fieldValue), {
+        loading: 'Updating...',
+        success: `${fieldName ? fieldName[0].toUpperCase() + fieldName.slice(1) : "Field"} updated successfully`,
+        error: 'Failed to update field',
+      })
+
+      // Clear existing timeout if any
+      if (animationTimeoutRef.current) {
+        clearTimeout(animationTimeoutRef.current);
+      }
+
+      // Turn on the animation after save fn completes
+      // setShowAnimation((prevState) => ({
+      //   ...prevState,
+      //   [fieldName]: true,
+      // }));
+    }, 1000),
+  ).current;
+
+  function handleDescriptionChange(e) {
+    const fieldName = e.target["id"] || "status";
     const fieldValue = e.target.value;
 
-    const currentValue = topic.Skills[skillId][fieldName];
-
-    // do nothing if value hasn't changed
-    if (currentValue === fieldValue) {
-      return;
-    }
-
-    updateSkill(topicId, skillId, fieldName, fieldValue);
-  }
-  function handleDescriptionChange(e) {
+    // setShowAnimation((state) => ({
+    //   ...state,
+    //   description: false,
+    // }));
     setDescription(e.target.value);
-    handleBlur(e);
+    delayedSaveAndAnimate(fieldName, fieldValue);
   }
-  function handleNameChange(e) {
-    setSkillName(e.target.value);
-    handleBlur(e);
-  }
+
+  const handleNameChange = (e) => {
+    const fieldName = e.target["id"] || "status";
+    const fieldValue = e.target.value;
+
+    // setShowAnimation((state) => ({
+    //   ...state,
+    //   name: false,
+    // }));
+    const value = e.target.value;
+    setSkillName(value);
+    delayedSaveAndAnimate(fieldName, fieldValue);
+  };
 
   function handleStatusChange(e) {
+    const fieldName = e.target["id"] || "status";
+    const fieldValue = e.target.value;
+
+    // setShowAnimation((state) => ({
+    //   ...state,
+    //   status: false,
+    // }));
     setStatus(e.target.value);
-    handleBlur(e);
+    delayedSaveAndAnimate(fieldName, fieldValue);
   }
+
+  function handleMasteryChange(e) {
+    const fieldName = "mastery";
+    const fieldValue = e.target.value;
+    // setShowAnimation((state) => ({
+    //   ...state,
+    //   mastery: false,
+    // }));
+    setMastery(e.target.value);
+    delayedSaveAndAnimate(fieldName, fieldValue);
+  }
+
+  function handleSpecialityChange(e) {
+    const fieldName = "speciality";
+    const fieldValue = e.target.value;
+    // setShowAnimation((state) => ({
+    //   ...state,
+    //   speciality: false,
+    // }));
+    setSpeciality(e.target.value);
+    delayedSaveAndAnimate(fieldName, fieldValue);
+  }
+
   return (
     <Box mb={4}>
-      <Typography variant="h4" component="h1" fontWeight={700} mb={2.5}>
-        Update Skill
-      </Typography>
-      <Box style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-        <TextField
-          id="name"
-          label="Topic Name"
-          value={skillName}
-          onChange={handleNameChange}
-          sx={{ marginBottom: 2 }}
-          required
-        />
+      {/* name input */}
+      <Box mb={2.5}>
+        <Typography variant="h4" component="h1" fontWeight={700} mb={2.5}>
+          Update Skill
+        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "0.5rem",
+          }}
+        >
+          <TextField
+            id="name"
+            label="Topic Name"
+            value={skillName}
+            onChange={handleNameChange}
+            sx={{ flexGrow: 1 }}
+            required
+          />
+          {/* <AnimationContainer>
+            {showAnimation.name && <SaveAnimation />}
+          </AnimationContainer> */}
+        </Box>
       </Box>
 
-      <Box mt={1}>
-        <Typography variant="body2">Description</Typography>
-        <TextField
-          id="description"
-          value={description}
-          onChange={handleDescriptionChange}
-          onBlur={null}
-          multiline
-          rows={4}
+
+
+      <Box style={{ display: "flex", alignItems: "center" }} mb={2.5}>
+        <FormControl
           variant="outlined"
           fullWidth
-        />
+        >
+          <TextField
+            id="description"
+            label="Description"
+            value={description}
+            onChange={handleDescriptionChange}
+            multiline
+            rows={4}
+            variant="outlined"
+            fullWidth
+          />
+        </FormControl>
+        {/* <AnimationContainer>
+          {showAnimation.description && <SaveAnimation />}
+        </AnimationContainer> */}
       </Box>
 
       {/* Mastery */}
-      <FormControl variant="outlined" sx={{ marginTop: "1rem" }} fullWidth>
-        <InputLabel>Mastery</InputLabel>
-        <Select
-          id="mastery"
-          label="Mastery"
-          value={mastery}
-          onBlur={handleBlur}
-          onChange={(e) => {
-            setMastery(e.target.value);
-          }}
+      <Box style={{ display: "flex", alignItems: "center" }} mb={2.5}>
+        <FormControl
+          variant="outlined"
+          fullWidth
         >
-          {mockMastery.map((item) => (
-            <MenuItem key={item} value={item}>
-              <ListItemText primary={item} />
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+          <InputLabel>Mastery</InputLabel>
+          <Select
+            id="mastery"
+            label="Mastery"
+            value={mastery}
+            onChange={handleMasteryChange}
+          >
+            {mockMastery.map((item) => (
+              <MenuItem key={item} value={item}>
+                <ListItemText primary={item} />
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        {/* <AnimationContainer>
+          {showAnimation.mastery && <SaveAnimation />}
+        </AnimationContainer> */}
+      </Box>
 
       {/* Speciality */}
-      <FormControl variant="outlined" sx={{ marginTop: "1rem" }} fullWidth>
-        <InputLabel>Speciality</InputLabel>
-        <Select
-          id="speciality"
-          label="Speciality"
-          value={speciality}
-          onBlur={handleBlur}
-          onChange={(e) => {
-            setSpeciality(e.target.value);
-          }}
+      <Box mb={2.5}></Box>
+      <Box style={{ display: "flex", alignItems: "center" }} mb={2.5}>
+        <FormControl
+          variant="outlined"
+          fullWidth
         >
-          {mockSpecialty.map((item) => (
-            <MenuItem key={item} value={item}>
-              <ListItemText primary={item} />
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+          <InputLabel>Speciality</InputLabel>
+          <Select
+            id="speciality"
+            label="Speciality"
+            value={speciality}
+            onChange={handleSpecialityChange}
+          >
+            {mockSpecialty.map((item) => (
+              <MenuItem key={item} value={item}>
+                <ListItemText primary={item} />
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        {/* <AnimationContainer>
+          {showAnimation.speciality && <SaveAnimation />}
+        </AnimationContainer> */}
+      </Box>
 
-      <FormControl variant="outlined" fullWidth sx={{ mt: 4 }}>
-        <InputLabel>Skill Status</InputLabel>
-        <Select
-          id="Status"
-          label="Skill Status"
-          value={status}
-          onBlur={handleBlur}
-          onChange={handleStatusChange}
-          sx={{
-            "& fieldset": {
-              borderColor: status === "Active" ? "lightgreen" : "red",
-            },
-          }}
+
+      <Box
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        mb={2.5}
+        mt={4}
+      >
+        <FormControl
+          variant="outlined"
+          fullWidth
         >
-          <MenuItem value="Active">Active</MenuItem>
-          <MenuItem value="Archived">Archived</MenuItem>
-        </Select>
-      </FormControl>
+          <InputLabel>Status</InputLabel>
+          <Select
+            id="status"
+            label="Status"
+            value={status}
+            onChange={handleStatusChange}
+            sx={{
+              "& fieldset": {
+                borderColor: status === "Active" ? "lightgreen" : "red",
+              },
+            }}
+          >
+            <MenuItem value="Active">Active</MenuItem>
+            <MenuItem value="Archived">Archived</MenuItem>
+          </Select>
+        </FormControl>
+        {/* <AnimationContainer>
+          {showAnimation.status && <SaveAnimation />}
+        </AnimationContainer> */}
+      </Box>
+
+
+
 
       <Box mt={2} display={"flex"} justifyContent="center">
         <Button
