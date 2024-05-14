@@ -8,15 +8,16 @@ import AddTopic from "./pages/AddTopic";
 import UpdateTopic from "./pages/UpdateTopic";
 import ErrorPage from "./pages/ErrorPage";
 import UpdateResource from "./pages/UpdateResource";
-import { createTheme, ThemeProvider,} from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material";
 import Path from "./pages/Path";
 import Category from "./pages/Category";
 import "./style.css";
 import UpdateSkill from "./pages/UpdateSkill";
+import Admin from "./pages/Admin";
 
 const theme = createTheme({
   typography: {
-    fontFamily: "avenir lt pro, Helvetica, Arial, sans-serif",
+    fontFamily: "avenir lt pro,  sans-serif",
   },
   palette: {
     primary: {
@@ -101,6 +102,10 @@ const router = createBrowserRouter([
       {
         path: "/category",
         element: <Category />,
+      },
+      {
+        path: "/admin",
+        element: <Admin />,
       },
     ],
   },
